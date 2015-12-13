@@ -53,7 +53,7 @@ class Post
     4.times do 
       idx += 1
       title = Faker::Lorem.sentence(3)
-      url = "http://localhost:5000/img/cid/slider-#{idx}.jpg"
+      url = "/img/cid/slider-#{idx}.jpg"
       posts << {id: idx, category_id: 15,  slug: title.slugify, title: title, summary: Faker::Hipster.paragraph(2), featured_image_url: url, author: "#{Faker::Name.first_name} #{Faker::Name.last_name}", published_at: Faker::Date.backward(30).strftime("%b %d, %Y") }
     end
     1000.times do
