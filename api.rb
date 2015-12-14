@@ -51,6 +51,16 @@ class Post
     
   end
   
+  def body
+    body = ""
+    (1..rand(5)).each do |i|
+      level = rand(3)+1
+      body += "<h#{level}>#{Faker::Lorem.sentence(3)}</h#{level}>"
+      body += "<p>#{Faker::Hipster.paragraph(rand(4) + 5)}</p>"
+    end
+    body
+  end
+  
   def populate
     posts = []
     idx = 0
@@ -68,7 +78,8 @@ class Post
         author_id: rand(3)+1, 
         author_twitter:"#{Faker::Name.first_name}#{Faker::Name.last_name}",
         author: "#{Faker::Name.first_name} #{Faker::Name.last_name}", 
-        published_at: Faker::Date.backward(30).strftime("%b %d, %Y") }
+        published_at: Faker::Date.backward(30).strftime("%b %d, %Y"),
+        body: body}
     end
     1000.times do
       idx += 1
@@ -85,7 +96,8 @@ class Post
         author_id: rand(3)+1, 
         author_twitter:"#{Faker::Name.first_name}#{Faker::Name.last_name}",
         author: "#{Faker::Name.first_name} #{Faker::Name.last_name}", 
-        published_at: Faker::Date.backward(30).strftime("%b %d, %Y") }
+        published_at: Faker::Date.backward(30).strftime("%b %d, %Y"),
+        body: body}
     end
     
     File.open(@filename,"w") do |f|
@@ -102,6 +114,16 @@ class Post
    @posts.select{|p| p['category_id'].eql?(categoryId.to_i)}
   end
   
+  def by_id(postId)
+    @posts.select{|p| p['id'].eql?(postId.to_i)}
+  end
+  
+end
+
+get '/posts/:postId' do
+  @post = Post.new.by_id(params['postId'])
+  headers( "Access-Control-Allow-Origin" => "*" )
+  jbuilder :post
 end
 
 get '/posts' do 
@@ -109,7 +131,6 @@ get '/posts' do
   limit = params['limit'] || 10
   offset = params['offset'] || 0
   posts = categoryId.nil? ? Post.new.all : Post.new.by_category(categoryId) 
-  puts posts.size
   @posts = posts[offset.to_i, limit.to_i]
   headers["x-pagination"] = {
     total: posts.size,
