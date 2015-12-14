@@ -47,6 +47,10 @@ class Post
     themes[categoryId]
   end
   
+  def author(authorId)
+    
+  end
+  
   def populate
     posts = []
     idx = 0
@@ -54,14 +58,34 @@ class Post
       idx += 1
       title = Faker::Lorem.sentence(3)
       url = "/img/cid/slider-#{idx}.jpg"
-      posts << {id: idx, category_id: 15,  slug: title.slugify, title: title, summary: Faker::Hipster.paragraph(2), featured_image_url: url, author: "#{Faker::Name.first_name} #{Faker::Name.last_name}", published_at: Faker::Date.backward(30).strftime("%b %d, %Y") }
+      posts << {
+        id: idx, 
+        category_id: 15,  
+        slug: title.slugify, 
+        title: title, 
+        summary: Faker::Hipster.paragraph(2), 
+        featured_image_url: url, 
+        author_id: rand(3)+1, 
+        author_twitter:"#{Faker::Name.first_name}#{Faker::Name.last_name}",
+        author: "#{Faker::Name.first_name} #{Faker::Name.last_name}", 
+        published_at: Faker::Date.backward(30).strftime("%b %d, %Y") }
     end
     1000.times do
       idx += 1
       title = Faker::Hipster.sentence(1)
       categoryId = rand(14)
-      url = "http://lorempixel.com/#{rand(500)+300}/#{rand(400)+100}/#{themes(categoryId.to_s)}/China-India-Dialogue/?#{rand(10000)}"
-      posts << {id: idx, category_id: categoryId,  slug: title.slugify, title: title, summary: Faker::Hipster.paragraph(4), featured_image_url: url, author: "#{Faker::Name.first_name} #{Faker::Name.last_name}", published_at: Faker::Date.backward(30).strftime("%b %d, %Y") }
+      url = "http://lorempixel.com/#{rand(300)+720}/#{rand(600)+100}/#{themes(categoryId.to_s)}/China-India-Dialogue/?#{rand(10000)}"
+      posts << {
+        id: idx, 
+        category_id: categoryId,  
+        slug: title.slugify, 
+        title: title, 
+        summary: Faker::Hipster.paragraph(4), 
+        featured_image_url: url, 
+        author_id: rand(3)+1, 
+        author_twitter:"#{Faker::Name.first_name}#{Faker::Name.last_name}",
+        author: "#{Faker::Name.first_name} #{Faker::Name.last_name}", 
+        published_at: Faker::Date.backward(30).strftime("%b %d, %Y") }
     end
     
     File.open(@filename,"w") do |f|
