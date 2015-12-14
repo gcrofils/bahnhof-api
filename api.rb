@@ -108,9 +108,17 @@ get '/posts' do
   categoryId = params['category_id']
   limit = params['limit'] || 10
   offset = params['offset'] || 0
-  @posts = categoryId.nil? ? Post.new.all : Post.new.by_category(categoryId) 
-  @posts = @posts[offset.to_i, limit.to_i]
+  posts = categoryId.nil? ? Post.new.all : Post.new.by_category(categoryId) 
+  puts posts.size
+  @posts = posts[offset.to_i, limit.to_i]
+  headers["x-pagination"] = {
+    total: posts.size,
+    total_pages: posts.size / limit.to_i,
+    current_page: (offset.to_i / limit.to_i) + 1,
+    offset: offset
+    }.to_json
   headers( "Access-Control-Allow-Origin" => "*" )
+  headers( "Access-Control-Expose-Headers" => "x-pagination")
   jbuilder :posts
 end
 
