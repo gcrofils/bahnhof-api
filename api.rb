@@ -83,7 +83,7 @@ class Post
         published_at: Faker::Date.backward(30).strftime("%b %d, %Y"),
         body: body}
     end
-    1000.times do
+    200.times do
       idx += 1
       title = Faker::Hipster.sentence(1)
       categoryId = rand(14)
