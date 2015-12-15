@@ -1,6 +1,6 @@
 categories = [
     { id: 0, order: 2, slug: 'business', label: 'Business', footer1: true, navbar: true, class: 'home-block-border', show_featured_on_home:false },
-    { id: 1, order: 99, slug: 'people', label: 'Society', show_featured_on_home:true },
+    { id: 1, order: 99, slug: 'people', label: 'People', show_featured_on_home:true },
     { id: 2, order: 99, slug: 'culture', label: 'Culture', footer2: true, show_featured_on_home:false },
     { id: 3, order: 6, slug: 'society', label: 'Society', footer1: true, navbar: true, show_featured_on_home:true },
     { id: 4, order: 99, slug: 'ecology', label: 'Ecology', show_featured_on_home:true },
