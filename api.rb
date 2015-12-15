@@ -53,10 +53,12 @@ class Post
   
   def body
     body = ""
-    (1..rand(5)).each do |i|
+    (1..rand(5)+5).each do |i|
       level = rand(3)+1
       body += "<h#{level}>#{Faker::Lorem.sentence(3)}</h#{level}>"
-      body += "<p>#{Faker::Hipster.paragraph(rand(4) + 5)}</p>"
+      (1..rand(5)+1).each do |j|
+        body += "<p>#{Faker::Hipster.paragraph(rand(4) + 5)}</p>"
+      end
     end
     body
   end
@@ -85,7 +87,7 @@ class Post
       idx += 1
       title = Faker::Hipster.sentence(1)
       categoryId = rand(14)
-      url = "http://lorempixel.com/#{rand(300)+720}/#{rand(600)+100}/#{themes(categoryId.to_s)}/China-India-Dialogue/?#{rand(10000)}"
+      url = "http://lorempixel.com/#{rand(300)+1000}/#{rand(600)+300}/#{themes(categoryId.to_s)}/China-India-Dialogue/?#{rand(10000)}"
       posts << {
         id: idx, 
         category_id: categoryId,  
@@ -118,13 +120,23 @@ class Post
     @posts.select{|p| p['id'].eql?(postId.to_i)}
   end
   
+  def by_slug(slugId)
+    @posts.select{|p| p['slug'].eql?(slugId)}
+  end
+  
 end
 
-get '/posts/:postId' do
-  @post = Post.new.by_id(params['postId'])
+get '/posts/:slugId' do
+  @post = Post.new.by_slug(params['slugId'])
   headers( "Access-Control-Allow-Origin" => "*" )
   jbuilder :post
 end
+
+# get '/posts/:postId' do
+#   @post = Post.new.by_id(params['postId'])
+#   headers( "Access-Control-Allow-Origin" => "*" )
+#   jbuilder :post
+# end
 
 get '/posts' do 
   categoryId = params['category_id']
