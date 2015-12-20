@@ -5,6 +5,7 @@ require 'sinatra/jbuilder'
 require 'faker'
 require 'slugify'
 require 'json'
+require 'open-uri'
 
 
 class Post
@@ -80,14 +81,19 @@ class Post
         author_id: rand(3)+1, 
         author_twitter:"#{Faker::Name.first_name}#{Faker::Name.last_name}",
         author: "#{Faker::Name.first_name} #{Faker::Name.last_name}", 
-        published_at: Faker::Date.backward(30).strftime("%b %d, %Y"),
+        published_at: Faker::Date.backward(30),
+        image_width: 800,
+        image_height: 504,
         body: body}
     end
-    200.times do
+    300.times do
       idx += 1
       title = Faker::Hipster.sentence(1)
       categoryId = rand(14)
-      url = "http://lorempixel.com/#{rand(300)+1000}/#{rand(600)+300}/#{themes(categoryId.to_s)}/China-India-Dialogue/?#{rand(10000)}"
+      width = rand(300)+1000
+      height = rand(600)+300
+      #url = "http://192.168.0.145:9292/image/#{width}/#{height}/#{themes(categoryId.to_s)}"
+      url = "http://lorempixel.com/#{width}/#{height}/#{themes(categoryId.to_s)}/China-India-Dialogue/?#{rand(10000)}"
       posts << {
         id: idx, 
         category_id: categoryId,  
@@ -98,7 +104,9 @@ class Post
         author_id: rand(3)+1, 
         author_twitter:"#{Faker::Name.first_name}#{Faker::Name.last_name}",
         author: "#{Faker::Name.first_name} #{Faker::Name.last_name}", 
-        published_at: Faker::Date.backward(30).strftime("%b %d, %Y"),
+        published_at: Faker::Date.backward(30),
+        image_width: width,
+        image_height: height,
         body: body}
     end
     
@@ -158,4 +166,10 @@ end
 get '/categories' do
   headers( "Access-Control-Allow-Origin" => "*" )
   jbuilder :categories
+end
+
+get '/image/:width/:height/:theme' do
+  is_thumb = params['thumb'] || false
+  url = "http://lorempixel.com/#{params['width']}/#{params['height']}/#{params['theme']}/China-India-Dialogue/?#{rand(10000)}"
+  send_file open(url), type: 'image/jpeg', disposition: 'inline'
 end
