@@ -146,12 +146,24 @@ end
 #   jbuilder :post
 # end
 
-get '/posts' do 
-  categoryId = params['category_id']
-  limit = params['limit'] || 10
-  offset = params['offset'] || 0
-  posts = categoryId.nil? ? Post.new.all : Post.new.by_category(categoryId) 
-  @posts = posts[offset.to_i, limit.to_i]
+get '/posts' do
+  if params['q']
+    posts = []
+    params['q'].split('|').each do |item|
+      categoryId, lim = item.split(',') 
+      p = Post.new.by_category(categoryId)
+      (posts << p[0, lim.to_i]).flatten!  
+    end
+    limit = posts.size
+    offset = 0
+    @posts = posts
+  else
+    categoryId = params['category_id']
+    limit = params['limit'] || 10
+    offset = params['offset'] || 0
+    posts = categoryId.nil? ? Post.new.all : Post.new.by_category(categoryId) 
+    @posts = posts[offset.to_i, limit.to_i]
+  end
   headers["x-pagination"] = {
     total: posts.size,
     total_pages: posts.size / limit.to_i,
@@ -164,6 +176,7 @@ get '/posts' do
 end
 
 get '/categories' do
+  sleep 3
   headers( "Access-Control-Allow-Origin" => "*" )
   jbuilder :categories
 end
