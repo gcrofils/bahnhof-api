@@ -176,7 +176,6 @@ get '/posts' do
 end
 
 get '/categories' do
-  sleep 3
   headers( "Access-Control-Allow-Origin" => "*" )
   jbuilder :categories
 end
