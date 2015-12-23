@@ -14,7 +14,7 @@ categories = [
     { id: 12, order: 7, slug: 'oneroadonebelt', label: 'One Road One Belt', footer1: true, class: 'home-block-reverse', navbar: true, show_featured_on_home:false },
     { id: 13, order: 99, slug: 'environment', label: 'Environment', additional_navbar:true, footer2: true, class: 'home-block-reverse', show_featured_on_home:true },
     { id: 14, order: 99, slug: 'travel', label: 'Travel / Image', additional_navbar: true, footer2: true, show_featured_on_home:true },
-    { id: 15, order: 1, slug: 'spotlight', label: 'Spotlight', footer1: true, navbar: true, show_featured_on_home:true }
+    { id: 20, order: 1, slug: 'spotlight', label: 'Spotlight', footer1: true, navbar: true, show_featured_on_home:true }
   ]
   
 json.array! categories.sort_by{|a| a[:order] }

@@ -73,7 +73,7 @@ class Post
       url = "/img/cid/slider-#{idx}.jpg"
       posts << {
         id: idx, 
-        category_id: 15,  
+        category_id: 20,  
         slug: title.slugify, 
         title: title, 
         summary: Faker::Hipster.paragraph(2), 
@@ -89,9 +89,14 @@ class Post
     300.times do
       idx += 1
       title = Faker::Hipster.sentence(1)
-      categoryId = rand(14)
-      width = rand(300)+1000
-      height = rand(600)+300
+      categoryId = rand(15)
+      if categoryId.eql?(14)
+        width=800
+        height=420
+      else
+        width = rand(300)+1000
+        height = rand(600)+300
+      end
       #url = "http://192.168.0.145:9292/image/#{width}/#{height}/#{themes(categoryId.to_s)}"
       url = "http://lorempixel.com/#{width}/#{height}/#{themes(categoryId.to_s)}/China-India-Dialogue/?#{rand(10000)}"
       posts << {
